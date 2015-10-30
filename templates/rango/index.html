@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{# django comments and tags won't be visible by "view page source" inspection #}
+{% load staticfiles %} {# django code to enable static files #}
+
 <html>
 <head>
 	<title>Rango</title>
@@ -7,5 +10,7 @@
 	<h1>Rango says...</h1>
 	Hello World! <strong>{{ boldmessage }}</strong></br>
 	<a href="/rango/about/">About</a>
+	<img src="{% static "images/rango.jpeg" %}" alt="Picture of Rango" /> {# inserting image #}
+		{# static tag combines STATIC_URL with images/rango.jpeg to create normal path #}
 </body>
 </html>
