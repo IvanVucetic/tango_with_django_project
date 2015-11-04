@@ -7,10 +7,18 @@
 	<title>Rango</title>
 </head>
 <body>
-	<h1>Rango says...</h1>
-	Hello World! <strong>{{ boldmessage }}</strong></br>
+	<h1>Rango says... Hello World!</h1>
+
+	{% if categories %}		{# if there are any categories... #}
+		<ul>
+			{% for category in categories %}
+				<li>{{ category.name }}</li>
+			{% endfor %}	{# this doesnt exist in python :/ #}
+		</ul>
+	{% else %}
+		<strong>There are no categories present.</strong>
+	{% endif %}
+
 	<a href="/rango/about/">About</a>
-	<img src="{% static "images/rango.jpeg" %}" alt="Picture of Rango" /> {# inserting image #}
-		{# static tag combines STATIC_URL with images/rango.jpeg to create normal path #}
 </body>
 </html>
