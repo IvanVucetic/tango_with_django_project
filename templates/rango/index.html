@@ -12,7 +12,7 @@
 	{% if categories %}		{# if there are any categories... #}
 		<ul>
 			{% for category in categories %}
-				<li>{{ category.name }}</li>
+				<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
 			{% endfor %}	{# this doesnt exist in python :/ #}
 		</ul>
 	{% else %}
