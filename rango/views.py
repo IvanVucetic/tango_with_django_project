@@ -2,6 +2,9 @@ from django.shortcuts import render
 
 #import the Category model
 from rango.models import Category
+#import the Page model
+from rango.models import Page
+
 
 from django.http import HttpResponse
 
@@ -28,3 +31,37 @@ def index(request):
 def about(request):
 	# return HttpResponse("Rango says here is the About page! </br> <a href='/rango'>Index</a>") 
 	return render(request, 'rango/about.html')
+
+def category(request, category_name_slug):
+
+	#create a dictionary that we can pass to the template rendering engine
+	context_dict = {}
+
+	try:
+		# Can we find a category name slug with a given name
+		# If we can't, the .get() method raises DoesNotExist exception
+		# So the .get() method returns one model instance or returns exception
+		category = Category.objects.get(slug=category_name_slug)
+		context_dict['category_name'] = category.name
+
+		# Retrieve all of the associated pages
+		# Note that filter returns >=1 model instance.
+		pages = Page.objects.filter(category = category)
+
+		# Adds our results list to the template context under name pages
+		context_dict['pages'] = pages
+		# We also add the category object from the database to the context dictionary
+		# We'll use this in the template to verify that the category exists
+		context_dict['category'] = category
+
+	except Category.DoesNotExist:
+		# We get here if we didnt find the specified category
+		# Don't do anything - the template displays the 'no category' message for us
+		pass
+
+	# Go render the response and return it to client
+	return render(request, 'rango/category.html', context_dict)
+
+
+
+
