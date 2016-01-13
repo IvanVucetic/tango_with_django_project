@@ -22,6 +22,10 @@ def index(request):
 	category_list = Category.objects.order_by('-likes')[:5]	# '-likes' is likes in descending order
 	context_dict = {'categories': category_list}
 
+	# Aslo show top 5 most viewed companies
+	top_categories_list = Category.objects.order_by('-views')[:5]
+	context_dict['top_categories'] = top_categories_list
+
 	# Return a rendered response to send to the client
 	# We make use of the shortcut function to make our lives easier
 	# Note that the first parameter is the template we wish to use
