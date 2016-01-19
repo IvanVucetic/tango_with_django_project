@@ -136,7 +136,7 @@ def register(request):
 	registered = False
 
 	# If it is a POST method, we're interested in processing
-	if request.method = 'POST':
+	if request.method == 'POST':
 		# Attempt to grab information from the forms
 		# We make use of both UserForm and UserProfileForm
 		user_form = UserForm(data = request.POST)
@@ -168,11 +168,11 @@ def register(request):
 			# update variable to tell the template that the registration was successful
 			registered = True
 
-		# Invalid form or forms - mistakes or something else?
-        # Print problems to the terminal.
-        # They'll also be shown to the user.
-    	else:
-    		print user_form.errors, profile_form.errors
+			# Invalid form or forms - mistakes or something else?
+        	# Print problems to the terminal.
+        	# They'll also be shown to the user.
+    		else:
+    			print user_form.errors, profile_form.errors
 
     # not a POST, so we render a form using 2 ModelForm instances
     # forms will be blank, ready for user input
