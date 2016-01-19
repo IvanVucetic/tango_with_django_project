@@ -8,7 +8,10 @@ from rango.models import Page
 from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+
+from django.contrib.auth import authenticate, login
+
 
 def index(request):
 	# old:
@@ -186,6 +189,42 @@ def register(request):
 		{'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
+# User login view
+def user_login(request):
 
+	# POST or GET
+	if request.method == 'POST':
+		# Gather username and pasword from the form
+			# We use request.POST.get('<variable>') as opposed to request.POST['<variable>'],
+        	# because the request.POST.get('<variable>') returns None, if the value does not exist,
+        	# while the request.POST['<variable>'] will raise key error exception
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
+        # Use Django machinery to check if user/pass combination is correct
+        # return User object if it is
+        user = authenticate(username=username, password=password)
 
+        # If we have a User object, the details are correct.
+        # If None (Python's way of representing the absence of a value), no user
+        # with matching credentials was found.
+        if user:
+        	# Is the account active- it could've been disabled
+        	if user.is_active():
+        		# If the account is valid and active, we can log the user in.
+                # We'll send the user back to the homepage.
+                login(request, user)
+                return HttpResponseRedirect('/rango/')
+            else:
+            	# An inactive account was used - no logging in!
+            	return HttpResponse("Your account is disabled")
+        else:
+        	# Bad details were provided, we can't log user in
+        	print "Invalid login details: %s, %s" % (username, password)
+        	return HttpResponse("Invalid login details supplied")
+    
+    # not POST, most likely GET
+    else:
+    	# No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        return render(request, '/rango/login.html', {})
