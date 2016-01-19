@@ -7,13 +7,12 @@
 	<h1>Register with Rango</h1>
 
 	{% if registered %}
-		Rango says <strong>Thank you for registering!</strong>
+		Rango says <strong>Thank you for registering!</strong> <br />
 		<a href="/rango/">Return to homepage.</a> <br />
 	{% else %}
 		Rango says <strong>Register here!</strong> <br />
 
-		<form id="user_form" method="POST" action="/rango/register"
-			enctype="multipart/form-data">
+		<form id="user_form" method="POST" action="/rango/register/" enctype="multipart/form-data">
 		{# enctype="multipart/form-data" is a must when uploading files #}
 
 			{% csrf_token %}
