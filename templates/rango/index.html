@@ -20,7 +20,7 @@
 		<h2>Top Categories</h2>
 		<ol>
 			{% for category in top_categories %}
-				<li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
+				<li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
 			{% endfor %}
 		</ol>
 	{% else %}

@@ -41,7 +41,7 @@ def index(request):
 
 def about(request):
     # return HttpResponse("Rango says here is the About page! </br> <a href='/rango'>Index</a>") 
-    return render(request, 'rango/about.html')
+    return render(request, 'rango/about.html', {})
 
 def category(request, category_name_slug):
 # What is category_name_slug? Check urls.py. I believe that whatever we pass
@@ -236,7 +236,7 @@ def user_login(request):
 # Test restricting access using decorator
 @login_required
 def restricted(request):
-    return render(request, 'rango/restricted.html')
+    return render(request, 'rango/restricted.html', {})
 
 # Logout functionality
 @login_required
