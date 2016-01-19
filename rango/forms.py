@@ -25,7 +25,6 @@ class PageForm(forms.ModelForm):
     class Meta(object):
         # Provide an association between the ModelForm and a model
         model = Page
-
         # What fields do we want to include in our form?
         # This way we don't need every field in the model present.
         # Some fields may allow NULL values, so we may not want to include them...
@@ -34,3 +33,14 @@ class PageForm(forms.ModelForm):
         exclude = ('category',)
         #or specify the fields to include (i.e. not include the category field)
         #fields = ('title', 'url', 'views'))
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        url = cleaned_data.get('url')
+
+        # If url is not empty and doesn't start with 'http://', prepend 'ht...'
+        if url and not url.startswith('http://'):
+            url = 'http://' + url
+            cleaned_data['url'] = url
+
+        return cleaned_data
