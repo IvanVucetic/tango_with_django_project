@@ -10,7 +10,7 @@ from rango.forms import UserForm, UserProfileForm
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # import login_required() decorator
 from django.contrib.auth.decorators import login_required
@@ -237,3 +237,12 @@ def user_login(request):
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
 
+# Logout functionality
+@login_required
+def user_logout(request):
+    # We now that the user is logged in, so we can log them out
+    # We will use Django's logout() function
+    logout(request)
+
+    # Take the user back to homepage
+    return HttpResponseRedirect('/rango/')
