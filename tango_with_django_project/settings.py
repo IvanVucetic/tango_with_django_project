@@ -103,3 +103,8 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 	TEMPLATE_PATH,)
+
+
+# LOGIN_URL used to redirect unlogged users to from restricted pages
+
+LOGIN_URL = 'rango/login/'
