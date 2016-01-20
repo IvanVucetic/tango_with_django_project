@@ -15,13 +15,10 @@ from django.contrib.auth import authenticate, login, logout
 # import login_required() decorator
 from django.contrib.auth.decorators import login_required
 
-def index(request):
-    # old:
-    # construct a dictionary to pass to the template engine as its context
-    # Note the key 'boldmessage' is the same as {{boldmessage}} in the template
-    #context_dict = {'boldmessage': "I am bold font from the context"}
+from datetime import datetime
 
-    #new:
+def index(request):
+
     # Query the database for a list of ALL categories currently stored.
     # Order the categories by no. likes in descending order.
     # Retrieve the top 5 only - or all if less than 5.
@@ -33,10 +30,46 @@ def index(request):
     top_categories_list = Category.objects.order_by('-views')[:5]
     context_dict['top_categories'] = top_categories_list
 
+    # Get the number of visits to the site.
+    # We use the COOKIES.get() function to obtain the visits cookie.
+    # If the cookie exists, the value returned is casted to an integer.
+    # If the cookie doesn't exist, we default to zero and cast that.
+    visits = int(request.COOKIES.get('visits', '1'))
+    reset_last_visit_time = False
+
     # Return a rendered response to send to the client
     # We make use of the shortcut function to make our lives easier
     # Note that the first parameter is the template we wish to use
-    return render(request, 'rango/index.html', context_dict)
+    response = render(request, 'rango/index.html', context_dict)
+
+    # Does the cookie 'last_visit' exist
+    if 'last_visit' in request.COOKIES:
+        # Yes, get the cookie's value
+        last_visit = request.COOKIES['last_visit']
+        # Cast the value to a Python's date/time object
+        last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+        # If it's been more than a day since the last visit...
+        if (datetime.now() - last_visit_time).seconds > 5:
+            visits = visits + 1
+            context_dict['visits'] = visits
+            # ...and flag that the cookie last visit needs to be updated
+            reset_last_visit_time = True
+    else:
+        # Cookie last_visit doesn't exist, so flag that it should be set
+        reset_last_visit_time = True
+        context_dict['visits'] = visits
+
+        # Obtain our Response object early so we can add cookie information
+    response = render(request, 'rango/index.html', context_dict)
+
+    if reset_last_visit_time:
+        response.set_cookie('last_visit', datetime.now())
+        response.set_cookie('visits', visits)
+
+    # Return response to the user, updating any cookies that need to be changed
+    return response
+
 
 
 def about(request):
@@ -136,7 +169,6 @@ def add_page(request, category_name_slug):
 
 # A view for user registration
 def register(request):
-
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
     registered = False
