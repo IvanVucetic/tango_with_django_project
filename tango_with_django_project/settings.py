@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,7 +88,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-	STATIC_PATH, )
+    STATIC_PATH, )
 
 
 # Media
@@ -99,12 +100,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #Absolute path to the media directo
 # Templates
 
 TEMPLATE_DIRS = (
-	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-	TEMPLATE_PATH,)
+    TEMPLATE_PATH,)
 
 
 # LOGIN_URL used to redirect unlogged users to from restricted pages
 
-LOGIN_URL = 'rango/login/'
+REGISTRATION_OPEN = True        # If True, users can register
+ACOUNT_ACTIVATION_DAYS = 7      # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
+LOGIN_REDIRECT_URL = '/rango/'  # The page you want users to arrive at after they successful log in
+LOGIN_URL = 'accounts/login'    # The page users are directed to if they are not logged in,
+                                # and are trying to access pages requiring authentication
