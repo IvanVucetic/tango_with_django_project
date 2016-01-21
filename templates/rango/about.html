@@ -5,9 +5,11 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/about.css" %}">
 
 {% block body_block %}	
-
-	<h1>About...</h1>
-	<p>This page is about Rango application.</p>
-	<img src="{% static "images/about.jpg" %}" alt="About sign" />
-
+	<div class="page-header">
+		<h1>About...</h1>
+	</div>
+	<div>
+		<p>This is <strong>Rango's about page</strong>.</p>
+		<img src="{% static "images/about.jpg" %}" alt="About sign" />
+	</div>
 {% endblock %}
