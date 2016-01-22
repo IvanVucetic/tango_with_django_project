@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 #import the Category model
 from rango.models import Category
@@ -279,3 +279,21 @@ def restricted(request):
 #
 #    # Take the user back to homepage
 #    return HttpResponseRedirect('/rango/')
+
+
+def track_url(request):
+    page_id = None
+    url = '/rango/'
+
+    if request.method == "GET":
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+            try:
+                page = Page.objects.get(id=page_id)
+                page.views += 1
+                page.save()
+                url = page.url
+            except:
+                pass
+
+    return redirect(url)
