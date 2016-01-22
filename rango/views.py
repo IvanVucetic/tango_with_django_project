@@ -30,6 +30,10 @@ def index(request):
     top_categories_list = Category.objects.order_by('-views')[:5]
     context_dict['top_categories'] = top_categories_list
 
+    # Sam dodao, ne znam valja li >/
+    pages = Page.objects.all().order_by('-views')[:5]
+    context_dict['pages'] = pages
+
     # Get the number of visits to the site.
     # We use the COOKIES.get() function to obtain the visits cookie.
     # If the cookie exists, the value returned is casted to an integer.
@@ -93,7 +97,7 @@ def category(request, category_name_slug):
 
         # Retrieve all of the associated pages
         # Note that filter returns >=1 model instance.
-        pages = Page.objects.filter(category = category)
+        pages = Page.objects.filter(category = category).order_by('-views')
 
         # Adds our results list to the template context under name pages
         context_dict['pages'] = pages
