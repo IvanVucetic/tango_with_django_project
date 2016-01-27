@@ -12,3 +12,12 @@ $("#likes").click(function () {
 // encoding the category_id in the request. If the request is successful, then 
 // the HTML element with id like_count (i.e. the <strong> ) is updated with 
 // the data returned by the request, and the HTML element with id likes (i.e. the <button>) is hidden.
+
+
+$("#suggestion").keyup(function () {
+    var query;
+    query = $(this).val();
+    $.get('/rango/suggest_category/', {suggestion: query}, function (data) {
+        $("#cats").html(data);
+    });
+});

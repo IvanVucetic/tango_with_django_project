@@ -320,3 +320,30 @@ def like_category(request):
 
     return HttpResponse(likes)
     
+
+# helper function for list of suggested categories
+def get_category_list(max_results=0, starts_with=''):
+    cat_list = []
+    if starts_with:
+        cat_list = Category.objects.filter(name__istartswith=starts_with) # istartswith--> case(u/l) doesn't matter
+
+    if max_results > 0:
+        if cat_list.count() > max_results:
+            cat_list = cat_list[:max_results]
+
+    return cat_list
+
+
+# a view for getting a list of suggested categories
+def suggest_category(request):
+
+    cat_list = []
+    starts_with = ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+
+    cat_list = get_category_list(8, starts_with)
+
+    return render(request, "rango/category_list.html", {"cat_list": cat_list})
+    # we are re-using the rango/cats.html template
+

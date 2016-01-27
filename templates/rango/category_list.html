@@ -1,0 +1,12 @@
+{# check chapter on templatetags #}
+
+<ul class="nav nav-sidebar">
+{% if cat_list %}
+	{% for category in cat_list %}
+		<li><a href="{% url 'category' category.slug %}">{{category.name}}</a></li>
+	{% endfor %}	
+{% else %}
+	<li><strong>There are no categories present.</strong></li>	
+{% endif %}
+</ul>
+	
